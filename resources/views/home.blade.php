@@ -8,18 +8,13 @@
                 <div class="card-header">Registro de Usuarios</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
+
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#UsuarioModal">
+                    <button type="button" class="btn btn-primary" onclick="mostrarModalCrear()">
                         Agregar Usuario
                     </button>
-                    
-                   
+
 
 
                     <!-- Modal -->
@@ -85,7 +80,7 @@
                                         </div>
 
 
-                                        
+
 
 
 
@@ -102,7 +97,7 @@
                         </div>
                     </div>
                     <!-- fin Modal -->
-                    
+
 
 
                     <br><br><br>
@@ -130,8 +125,8 @@
                                         <td>{{ $usuario->telephone }}</td>
                                         <td>{{ $usuario->created_at }}</td>
                                         <td>{{ $usuario->updated_at }}</td>
-                                        
-                                    
+
+
                                         <td>
                                             <button type="button" class="btn btn-success"
                                                 onclick="mostrarModalEditar({{$usuario->id}})">
@@ -165,7 +160,7 @@
 </div>
 
 <script>
-    
+
 function getCamposForm(idForm) {
     var camposForm = [];
     $("#" + idForm)
@@ -179,6 +174,7 @@ function getCamposForm(idForm) {
 }
 
 function limpiarFormulario(idForm) {
+
     $("#" + idForm)[0].reset();
     camposForm = getCamposForm(idForm);
 
@@ -197,7 +193,7 @@ function limpiarFormulario(idForm) {
 }
 
 $("#btn-guardar-usuario").click(function() {
-    
+
     var data = $("#form-usuario").serialize();
     var camposForm = getCamposForm("form-usuario");
     var url = $("#form-usuario").attr("action");
@@ -210,7 +206,7 @@ $("#btn-guardar-usuario").click(function() {
         contentType: false,
         processData: false,
         beforeSend: function() {
-           
+
         }
     })
         .done(function(reply) {
@@ -295,8 +291,19 @@ function eliminarUsuario(id) {
         });
 }
 
+function mostrarModalCrear(){
+
+    $("#email").prop('disabled', false);
+    limpiarFormulario("form-usuario");
+    $("#UsuarioModal").modal("show");
+
+
+
+}
+
 function mostrarModalEditar(id){
 
+    $("#email").prop('disabled', true);
     $.ajax({
         async: true,
         cache: false,
@@ -309,11 +316,11 @@ function mostrarModalEditar(id){
         .done(function(resp) {
 
             console.log(resp);
-            for (i in resp) {               
+            for (i in resp) {
                  if($("#" + i).length >0){
                   $("#" + i).val(resp[i]);
-                 }              
-              }            
+                 }
+              }
         })
         .fail(function(jqXHR, ajaxOptions, thrownError) {
             toastr.error("El servidor no responde");
