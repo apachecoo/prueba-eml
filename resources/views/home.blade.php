@@ -15,7 +15,7 @@
                     @endif
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vehiculoModal">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#UsuarioModal">
                         Agregar Usuario
                     </button>
                     
@@ -23,14 +23,14 @@
 
 
                     <!-- Modal -->
-                    <div class="modal fade" id="vehiculoModal" tabindex="-1" role="dialog"
-                        aria-labelledby="vehiculoModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="UsuarioModal" tabindex="-1" role="dialog"
+                        aria-labelledby="UsuarioModalLabel" aria-hidden="true">
                         <div class="modal-dialog " role="document">
                             <div class="modal-content">
                                 <form method="POST" action="{{ route('usuario.store') }}" id="form-usuario"
                                     enctype="multipart/form-data">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="vehiculoModalLabel">Formulario agregar vehículo</h5>
+                                        <h5 class="modal-title" id="UsuarioModalLabel">Formulario agregar usuario</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -41,52 +41,51 @@
                                         <input type="hidden" name="hidden_id" id="hidden_id">
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
-                                                <label for="conductor">Conductor *</label>
-                                                <input type="text" class="form-control" name="conductor" id="conductor">
+                                                <label for="name">Nombres *</label>
+                                                <input type="text" class="form-control" name="name" id="name">
                                                 <span class="invalid-feedback hide" role="alert"></span>
                                                 <div class="valid-feedback">ok!</div>
                                             </div>
-
-
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="placas">Placas *</label>
-                                                <input type="text" class="form-control" name="placas" id="placas">
-                                                <span class="invalid-feedback hide" role="alert"></span>
-                                                <div class="valid-feedback">ok!</div>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="modelo">Modelo *</label>
-                                                <input type="text" class="form-control" name="modelo" id="modelo">
-                                                <span class="invalid-feedback hide" role="alert"></span>
-                                                <div class="valid-feedback">ok!</div>
-                                            </div>
 
-
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12 ">
-                                                <label for="observacion">Observación</label>
-                                                <textarea class="form-control" name="observacion" id="observacion"
-                                                    placeholder="Observación"></textarea>
-                                            </div>
-
-                                        </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
-                                                <label for="imagen">Subir imagen</label>
-                                                <input type="file" class="form-control" name="imagen" id="imagen">
+                                                <label for="last_name">Apellidos *</label>
+                                                <input type="text" class="form-control" name="last_name" id="last_name">
                                                 <span class="invalid-feedback hide" role="alert"></span>
                                                 <div class="valid-feedback">ok!</div>
                                             </div>
                                         </div>
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-12">                                                
-                                                <img src="{{asset('imagenes/kci-239/ephVKPY2vTBUQuk6RrsC128JjqWUbIbdYJTupOl4.jpeg')}}" alt="" style="width: 150px; height: 100px;">
+                                            <div class="form-group col-md-12">
+                                                <label for="telephone">Teléfono *</label>
+                                                <input type="text" class="form-control" name="telephone" id="telephone">
+                                                <span class="invalid-feedback hide" role="alert"></span>
+                                                <div class="valid-feedback">ok!</div>
                                             </div>
                                         </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="email">Correo electrónico *</label>
+                                                <input type="text" class="form-control" name="email" id="email">
+                                                <span class="invalid-feedback hide" role="alert"></span>
+                                                <div class="valid-feedback">ok!</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="password">Password *</label>
+                                                <input type="password" class="form-control" name="password" id="password">
+                                                <span class="invalid-feedback hide" role="alert"></span>
+                                                <div class="valid-feedback">ok!</div>
+                                            </div>
+                                        </div>
+
+
+                                        
 
 
 
@@ -95,7 +94,7 @@
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Cerrar</button>
                                         <button type="button" class="btn btn-primary"
-                                            id="btn-guardar-vehiculo">Guardar</button>
+                                            id="btn-guardar-usuario">Guardar</button>
                                     </div>
 
                                 </form>
@@ -103,9 +102,6 @@
                         </div>
                     </div>
                     <!-- fin Modal -->
-
-
-
                     
 
 
@@ -142,7 +138,7 @@
                                                 Editar
                                             </button>
                                             <button type="button" class="btn btn-danger"
-                                                onclick="eliminarVehiculo({{$usuario->id}})">
+                                                onclick="eliminarUsuario({{$usuario->id}})">
                                                 x
                                             </button>
                                         </td>
@@ -169,7 +165,7 @@
 </div>
 
 <script>
-    // toastr.error("hola");
+    
 function getCamposForm(idForm) {
     var camposForm = [];
     $("#" + idForm)
@@ -200,10 +196,8 @@ function limpiarFormulario(idForm) {
     }
 }
 
-$("#btn-guardar-vehiculo").click(function() {
-    var $imagen = $("#imagen");
-    var formData = new FormData($("#form-usuario")[0]);
-    formData.append("imagen", $imagen[0].files[0]);
+$("#btn-guardar-usuario").click(function() {
+    
     var data = $("#form-usuario").serialize();
     var camposForm = getCamposForm("form-usuario");
     var url = $("#form-usuario").attr("action");
@@ -213,7 +207,6 @@ $("#btn-guardar-vehiculo").click(function() {
         cache: false,
         type: "POST",
         url: url + "?" + data,
-        data: formData,
         contentType: false,
         processData: false,
         beforeSend: function() {
@@ -264,8 +257,8 @@ $("#btn-guardar-vehiculo").click(function() {
 
             if (reply.created == true) {
                 limpiarFormulario("form-usuario");
-                $("#vehiculoModal").modal("hide");
-                toastr.success("Vehículo guardado exitosamente");
+                $("#UsuarioModal").modal("hide");
+                toastr.success(reply.message);
                 setTimeout(() => {
                     window.location.href = base_path + "/home";
                 }, 1000);
@@ -276,7 +269,7 @@ $("#btn-guardar-vehiculo").click(function() {
         });
 });
 
-function eliminarVehiculo(id) {
+function eliminarUsuario(id) {
     $.ajax({
         async: true,
         cache: false,
@@ -326,7 +319,7 @@ function mostrarModalEditar(id){
             toastr.error("El servidor no responde");
         });
 
-    $("#vehiculoModal").modal("show");
+    $("#UsuarioModal").modal("show");
     $("#hidden_id").val(id);
 }
 

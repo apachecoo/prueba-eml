@@ -9,6 +9,8 @@ window._ = require('lodash');
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
+    window.toastr = require('toastr');
+    toastr.options.toastClass = 'toastr';
 
     require('bootstrap');
 } catch (e) {}
