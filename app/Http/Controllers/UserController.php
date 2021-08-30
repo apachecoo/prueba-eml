@@ -2,49 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Log;
 use Validator;
 
 class UserController extends Controller
 {
-    
+
     public function __construct()
     {
         $this->middleware('auth');
     }
-   
+
     public function index()
     {
-        $datos = User::where('deleted','0')->orderBy('id','desc')->paginate(5);
-        return view('home',compact('datos'));
+        $datos = User::where('deleted', '0')->orderBy('id', 'desc')->paginate(5);
+        return view('home', compact('datos'));
     }
 
-   
-    public function create()
-    {
-        //
-    }
-
-    
     public function store(Request $request)
     {
 
-        // Log::info($request->all());
         $this->data = $request->except(['_token']);
 
         $rules = [
-            'name'              => 'required',
-            'last_name'              => 'required',
-            'telephone'              => 'required|numeric',
-            'email'                 => 'required|string|email|max:255|unique:users',            
-            'password'                 => 'required',            
+            'name'      => 'required',
+            'last_name' => 'required',
+            'telephone' => 'required|numeric'
         ];
 
-        $validator = Validator::make($this->data, $rules);
+        if (empty($this->data['hidden_id']) && !is_numeric($this->data['hidden_id'])) {
+            $rules['email'] = 'required|string|email|max:255|unique:users';
+            $rules['password'] = 'required';
+        }
 
-    //    Log::info($validator->fails());
+        $validator = Validator::make($this->data, $rules);
 
         if ($validator->fails()) {
             $errors = [];
@@ -56,48 +49,41 @@ class UserController extends Controller
 
             return response()->json(array(
                 'created' => false,
-                'errors'  => $errors
+                'errors' => $errors,
             ), 200);
         }
 
-        
-
-        
-
         if (!empty($this->data['hidden_id']) && is_numeric($this->data['hidden_id'])) {
 
-            $datosActualizar=$this->data;
+            $datosActualizar = $this->data;
             unset($datosActualizar['hidden_id']);
+            unset($datosActualizar['email']);
+            if(empty($datosActualizar['password'])){
+                unset($datosActualizar['password']);
+            }
+            
+            
             User::where('id', '=', $this->data['hidden_id'])->update($datosActualizar);
 
         } else {
             User::create($this->data);
         }
 
-
         return response()->json(array(
             'created' => true,
-            'message'  => 'Usuario guardado correctamente'
+            'message' => 'Usuario guardado correctamente',
         ), 200);
     }
 
-    
     public function show($id)
     {
         return User::find($id);
     }
 
-    
-    // public function update(Request $request, $id)
-    // {
-    //     //
-    // }
-
-    
     public function destroy($id)
     {
         try {
-            User::where('id', '=', $id)->update(['deleted'=>'1']);  
+            User::where('id', '=', $id)->update(['deleted' => '1']);
 
             return response()->json(array(
                 'deleted' => true,
